@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Телефон - Видеозвонок</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .phone-screen {
+            background: linear-gradient(to bottom, #0a0a0f, #000);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .status-bar {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+        
+        .time {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .recording-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .recording-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff3b30;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+        
+        .recording-text {
+            font-size: 12px;
+            font-weight: bold;
+            color: #ff3b30;
+        }
+        
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .contact-name {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .phone-number {
+            font-size: 22px;
+            color: #8e8e93;
+            margin-bottom: 40px;
+        }
+        
+        .timer {
+            font-size: 32px;
+            font-family: 'SF Mono', monospace;
+            margin: 30px 0;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .status {
+            font-size: 20px;
+            color: #8e8e93;
+            margin-top: 20px;
+        }
+        
+        .status.recording {
+            color: #32d74b;
+        }
+        
+        .call-button {
+            margin-bottom: 60px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .button-circle {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .call .button-circle {
+            background: rgba(52, 199, 89, 0.15);
+        }
+        
+        .end-call .button-circle {
+            background: rgba(255, 59, 48, 0.15);
+        }
+        
+        .button-icon {
+            font-size: 34px;
+        }
+        
+        .call .button-icon {
+            color: #34c759;
+        }
+        
+        .end-call .button-icon {
+            color: #ff3b30;
+        }
+        
+        .button-label {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .call .button-label {
+            color: #34c759;
+        }
+        
+        .end-call .button-label {
+            color: #ff3b30;
+        }
+        
+        .video-preview {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .video-preview.active {
+            opacity: 1;
+        }
+        
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(28, 28, 30, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            min-width: 280px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .alert.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        .alert-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .alert-message {
+            font-size: 15px;
+            color: #8e8e93;
+            margin-bottom: 20px;
+        }
+        
+        .alert-button {
+            background: #007aff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 17px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -48%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-screen">
+        <!-- Видео превью (скрыто) -->
+        <video id="videoPreview" class="video-preview" playsinline></video>
+        
+        <!-- Статус бар -->
+        <div class="status-bar">
+            <div class="time" id="currentTime">12:00</div>
+            <div class="recording-indicator" id="recordingIndicator">
+                <div class="recording-dot"></div>
+                <div class="recording-text">REC</div>
+            </div>
+        </div>
+        
+        <!-- Основной контент -->
+        <div class="content">
+            <div class="contact-name">Любимая</div>
+            <div class="phone-number">+7 (953) 655-99-99</div>
+            
+            <div class="timer" id="timer">00:00</div>
+            
+            <div class="status" id="status">набирает...</div>
+        </div>
+        
+        <!-- Кнопка вызова -->
+        <div class="call-button call" id="callButton">
+            <div class="button-circle">
+                <div class="button-icon">📞</div>
+            </div>
+            <div class="button-label">Вызов</div>
+        </div>
+        
+        <!-- Кнопка завершения -->
+        <div class="call-button end-call hidden" id="endCallButton">
+            <div class="button-circle">
+                <div class="button-icon">📵</div>
+            </div>
+            <div class="button-label">Завершить</div>
+        </div>
+        
+        <!-- Алерт -->
+        <div class="alert" id="alert">
+            <div class="alert-title" id="alertTitle">Готово</div>
+            <div class="alert-message" id="alertMessage">Видео сохранено в галерею</div>
+            <button class="alert-button" id="alertButton">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Элементы DOM
+        const callButton = document.getElementById('callButton');
+        const endCallButton = document.getElementById('endCallButton');
+        const timerElement = document.getElementById('timer');
+        const statusElement = document.getElementById('status');
+        const recordingIndicator = document.getElementById('recordingIndicator');
+        const currentTimeElement = document.getElementById('currentTime');
+        const videoPreview = document.getElementById('videoPreview');
+        const alertElement = document.getElementById('alert');
+        const alertTitle = document.getElementById('alertTitle');
+        const alertMessage = document.getElementById('alertMessage');
+        const alertButton = document.getElementById('alertButton');
+        
+        // Переменные состояния
+        let isRecording = false;
+        let seconds = 0;
+        let timerInterval = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let stream = null;
+        
+        // Обновление времени в статус баре
+        function updateCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            currentTimeElement.textContent = `${hours}:${minutes}`;
+        }
+        
+        // Форматирование времени
+        function formatTime(totalSeconds) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Показать алерт
+        function showAlert(title, message) {
+            alertTitle.textContent = title;
+            alertMessage.textContent = message;
+            alertElement.classList.add('active');
+        }
+        
+        // Скрыть алерт
+        function hideAlert() {
+            alertElement.classList.remove('active');
+        }
+        
+        // Начать запись видео
+        async function startRecording() {
+            try {
+                console.log('🎥 Запрос доступа к камере...');
+                
+                // Запрашиваем доступ к камере и микрофону
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 },
+                        facingMode: 'environment' // Задняя камера
+                    },
+                    audio: true
+                });
+                
+                console.log('✅ Доступ к камере получен');
+                
+                // Показываем превью
+                videoPreview.srcObject = stream;
+                videoPreview.classList.add('active');
+                await videoPreview.play();
+                
+                // Создаем MediaRecorder
+                mediaRecorder = new MediaRecorder(stream, {
+                    mimeType: 'video/webm;codecs=vp9',
+                    videoBitsPerSecond: 2500000 // 2.5 Mbps
+                });
+                
+                // Собираем данные
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+                
+                // При завершении записи
+                mediaRecorder.onstop = () => {
+                    console.log('📹 Запись завершена');
+                    
+                    // Создаем Blob из записанных данных
+                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    recordedChunks = [];
+                    
+                    // Сохраняем видео
+                    saveVideo(blob);
+                    
+                    // Останавливаем поток
+                    stream.getTracks().forEach(track => track.stop());
+                    videoPreview.classList.remove('active');
+                    videoPreview.srcObject = null;
+                };
+                
+                // Начинаем запись
+                mediaRecorder.start(1000); // Записываем каждую секунду
+                console.log('🎬 Начало записи видео');
+                
+                return true;
+                
+            } catch (error) {
+                console.error('❌ Ошибка доступа к камере:', error);
+                showAlert('Ошибка', 'Не удалось получить доступ к камере');
+                return false;
+            }
+        }
+        
+        // Остановить запись
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                console.log('⏹️ Остановка записи');
+            }
+        }
+        
+        // Сохранить видео
+        function saveVideo(blob) {
+            console.log('💾 Сохранение видео...');
+            
+            // Создаем URL для видео
+            const videoURL = URL.createObjectURL(blob);
+            
+            // Создаем ссылку для скачивания
+            const a = document.createElement('a');
+            a.href = videoURL;
+            a.download = `video_звонок_${new Date().toISOString().replace(/[:.]/g, '-')}.webm`;
+            
+            // Автоматически кликаем по ссылке (скачиваем)
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            // Освобождаем URL
+            setTimeout(() => URL.revokeObjectURL(videoURL), 100);
+            
+            console.log('✅ Видео сохранено');
+            showAlert('Готово', 'Видео скачано на ваше устройство');
+        }
+        
+        // Начать "звонок"
+        async function startCall() {
+            console.log('📞 Начало звонка');
+            
+            // Меняем интерфейс
+            callButton.classList.add('hidden');
+            endCallButton.classList.remove('hidden');
+            statusElement.textContent = 'разговор...';
+            statusElement.classList.add('recording');
+            recordingIndicator.style.opacity = '1';
+            timerElement.style.opacity = '1';
+            
+            // Запускаем таймер
+            seconds = 0;
+            timerElement.textContent = formatTime(seconds);
+            timerInterval = setInterval(() => {
+                seconds++;
+                timerElement.textContent = formatTime(seconds);
+                console.log(`⏱️ Время: ${seconds} сек`);
+            }, 1000);
+            
+            // Начинаем запись видео
+            const recordingStarted = await startRecording();
+            
+            if (!recordingStarted) {
+                // Если не удалось начать запись, показываем имитацию
+                console.log('📹 Имитация записи (без камеры)');
+                showAlert('Информация', 'Запись видео начата (имитация)');
+            }
+        }
+        
+        // Завершить "звонок"
+        function endCall() {
+            console.log('📵 Завершение звонка');
+            
+            // Меняем интерфейс
+            endCallButton.classList.add('hidden');
+            callButton.classList.remove('hidden');
+            statusElement.textContent = 'набирает...';
+            statusElement.classList.remove('recording');
+            recordingIndicator.style.opacity = '0';
+            timerElement.style.opacity = '0';
+            
+            // Останавливаем таймер
+            clearInterval(timerInterval);
+            
+            // Останавливаем запись
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                stopRecording();
+            } else {
+                // Если запись не шла, показываем сообщение
+                showAlert('Готово', 'Видео сохранено');
+            }
+            
+            console.log('💾 Видео сохранено');
+        }
+        
+        // Инициализация
+        function init() {
+            // Обновляем время
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 60000);
+            
+            // Обработчики кнопок
+            callButton.addEventListener('click', startCall);
+            endCallButton.addEventListener('click', endCall);
+            alertButton.addEventListener('click', hideAlert);
+            
+            // Проверяем поддержку MediaRecorder
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                console.warn('⚠️ Камера не поддерживается в этом браузере');
+                showAlert('Внимание', 'Для записи видео откройте в Safari или Chrome на iPhone');
+            }
+            
+            console.log('📱 Приложение "Телефон" готово к работе');
+        }
+        
+        // Запуск при загрузке
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
