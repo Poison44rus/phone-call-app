@@ -4,30 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Телефон</title>
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
     <style>
-        /* iOS SYSTEM FONTS */
-        @font-face {
-            font-family: 'SF Pro Display';
-            src: local('-apple-system'), local('BlinkMacSystemFont'), local('Segoe UI');
-        }
-        
-        @font-face {
-            font-family: 'SF Mono';
-            src: local('Menlo'), local('Monaco'), local('Courier New');
-        }
-        
-        /* RESET */
+        /* ТОЧНЫЕ СТИЛИ iOS ТЕЛЕФОН */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
         
         html, body {
@@ -37,7 +23,7 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
             color: #ffffff;
             position: fixed;
             width: 100%;
@@ -45,174 +31,98 @@
             user-select: none;
         }
         
-        /* iOS STATUS BAR (точная копия) */
-        .ios-status-bar {
-            height: 44px;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            z-index: 10000;
-        }
-        
-        .status-left {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 15px;
-            font-weight: 600;
-            letter-spacing: -0.24px;
-        }
-        
-        .status-right {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .signal {
-            width: 17px;
-            height: 10px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='10' viewBox='0 0 17 10'%3E%3Cpath fill='%23FFFFFF' d='M16 0h-3c-.6 0-1 .4-1 1v8c0 .6.4 1 1 1h3c.6 0 1-.4 1-1V1c0-.6-.4-1-1-1zm-4 9V1c0-.6-.4-1-1-1H8c-.6 0-1 .4-1 1v8c0 .6.4 1 1 1h3c.6 0 1-.4 1-1zm-5 0V3c0-.6-.4-1-1-1H3c-.6 0-1 .4-1 1v6c0 .6.4 1 1 1h3c.6 0 1-.4 1-1zm-5 0V5c0-.6-.4-1-1-1H0c-.6 0-1 .4-1 1v4c0 .6.4 1 1 1h2c.6 0 1-.4 1-1z'/%3E%3C/svg%3E") no-repeat center;
-        }
-        
-        .wifi {
-            width: 15px;
-            height: 11px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='11' viewBox='0 0 15 11'%3E%3Cpath fill='%23FFFFFF' d='M7.5 0C4.3 0 1.5 1.1 0 3l1.5 1.8C2.8 3.1 5 2.1 7.5 2.1s4.7 1 6 2.7L15 3C13.5 1.1 10.7 0 7.5 0zm0 5c-1.5 0-2.8.6-3.8 1.5l1.5 1.8c.6-.6 1.5-1 2.3-1s1.7.4 2.3 1l1.5-1.8c-1-1-2.3-1.5-3.8-1.5zm0 5c-.8 0-1.5.4-1.9 1l1.9 2.3 1.9-2.3c-.4-.6-1.1-1-1.9-1z'/%3E%3C/svg%3E") no-repeat center;
-        }
-        
-        .battery {
-            width: 24px;
-            height: 11px;
-            position: relative;
-        }
-        
-        .battery::before {
-            content: '';
-            position: absolute;
-            width: 22px;
-            height: 11px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 2.5px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .battery::after {
-            content: '';
-            position: absolute;
-            right: -3px;
-            top: 3px;
-            width: 1px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 0 1px 1px 0;
-        }
-        
-        .battery-level {
-            position: absolute;
-            left: 2px;
-            top: 2px;
-            bottom: 2px;
-            width: 18px;
-            background: #34c759;
-            border-radius: 1px;
-        }
-        
-        /* CALL SCREEN (точный экран звонка iOS) */
+        /* ЭКРАН ЗВОНКА iOS (ТОЧНАЯ КОПИЯ) */
         .call-screen {
-            height: calc(100% - 44px);
-            background: linear-gradient(180deg, #000000 0%, #1c1c1e 100%);
+            height: 100vh;
+            background: #000000;
             display: flex;
             flex-direction: column;
             position: relative;
         }
         
-        /* CONTACT INFO (как в iOS) */
-        .contact-info {
+        /* ВЕРХНЯЯ ЧАСТЬ - ИНФОРМАЦИЯ О КОНТАКТЕ */
+        .contact-section {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 0 40px;
-            text-align: center;
+            padding-top: 60px;
         }
         
-        .contact-label {
-            font-size: 28px;
+        .contact-name {
+            font-size: 36px;
             font-weight: 600;
             letter-spacing: 0.35px;
             margin-bottom: 8px;
-            color: rgba(255, 255, 255, 0.9);
+            color: #ffffff;
         }
         
         .phone-number {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 400;
-            letter-spacing: 0.38px;
+            letter-spacing: 0.35px;
             color: rgba(255, 255, 255, 0.5);
             margin-bottom: 40px;
         }
         
-        /* CALL TIMER (точный таймер iOS) */
+        /* ТАЙМЕР (как в iOS) */
         .call-timer {
             font-family: 'SF Mono', monospace;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 400;
             letter-spacing: 0.35px;
-            color: rgba(255, 255, 255, 0.9);
-            margin: 32px 0;
-            height: 34px;
+            color: #ffffff;
+            margin: 30px 0;
+            height: 38px;
             opacity: 0;
-            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.3s;
         }
         
         .call-timer.visible {
             opacity: 1;
         }
         
-        /* CALL STATUS (статус звонка iOS) */
+        /* СТАТУС ЗВОНКА */
         .call-status {
-            font-size: 17px;
+            font-size: 20px;
             font-weight: 400;
-            letter-spacing: -0.41px;
+            letter-spacing: 0.35px;
             color: rgba(255, 255, 255, 0.5);
-            height: 22px;
-            margin-bottom: 20px;
+            height: 24px;
         }
         
         .call-status.active {
             color: #32d74b;
         }
         
-        /* CALL BUTTONS (точные кнопки iOS) */
-        .call-buttons {
-            padding-bottom: 34px;
+        /* НИЖНЯЯ ЧАСТЬ - КНОПКИ */
+        .buttons-section {
+            padding-bottom: 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         
-        /* Кнопка вызова (зеленая как в iOS) */
+        /* КНОПКА ВЫЗОВА (ЗЕЛЕНАЯ iOS) */
         .call-button {
-            width: 64px;
-            height: 64px;
-            border-radius: 32px;
-            background: linear-gradient(180deg, #34c759 0%, #30b453 100%);
+            width: 80px;
+            height: 80px;
+            border-radius: 40px;
+            background: #34c759;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(52, 199, 89, 0.3);
+            transition: all 0.2s;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 20px rgba(52, 199, 89, 0.4);
+        }
+        
+        .call-button:active {
+            transform: scale(0.95);
+            background: #30b453;
         }
         
         .call-button::before {
@@ -230,26 +140,30 @@
             background: rgba(255, 255, 255, 0.2);
         }
         
-        .call-button-icon {
-            font-size: 28px;
+        .call-icon {
+            font-size: 34px;
             color: white;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
         }
         
-        /* Кнопка завершения (красная как в iOS) */
+        /* КНОПКА ЗАВЕРШЕНИЯ (КРАСНАЯ iOS) */
         .end-call-button {
-            width: 64px;
-            height: 64px;
-            border-radius: 32px;
-            background: linear-gradient(180deg, #ff3b30 0%, #e7352a 100%);
+            width: 80px;
+            height: 80px;
+            border-radius: 40px;
+            background: #ff3b30;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(255, 59, 48, 0.3);
+            transition: all 0.2s;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 20px rgba(255, 59, 48, 0.4);
+        }
+        
+        .end-call-button:active {
+            transform: scale(0.95);
+            background: #e7352a;
         }
         
         .end-call-button::before {
@@ -267,25 +181,25 @@
             background: rgba(255, 255, 255, 0.2);
         }
         
-        .end-call-button-icon {
-            font-size: 28px;
+        .end-call-icon {
+            font-size: 34px;
             color: white;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
         }
         
+        /* ТЕКСТ ПОД КНОПКОЙ */
         .button-label {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 400;
-            letter-spacing: -0.08px;
-            margin-top: 8px;
+            letter-spacing: 0.35px;
+            margin-top: 10px;
             color: rgba(255, 255, 255, 0.6);
         }
         
-        /* RECORDING INDICATOR (индикатор записи iOS) */
+        /* ИНДИКАТОР ЗАПИСИ */
         .recording-indicator {
             position: absolute;
-            top: 60px;
-            right: 16px;
+            top: 30px;
+            right: 20px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -298,22 +212,21 @@
             height: 6px;
             background: #ff3b30;
             border-radius: 3px;
-            animation: recordingPulse 1.2s ease-in-out infinite;
+            animation: pulse 1s infinite;
         }
         
-        @keyframes recordingPulse {
+        @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
         
         .recording-text {
             font-size: 12px;
-            font-weight: 590;
-            letter-spacing: 0.5px;
+            font-weight: 600;
             color: #ff3b30;
         }
         
-        /* VIDEO PREVIEW (скрытая камера) */
+        /* СКРЫТАЯ КАМЕРА */
         .video-preview {
             position: fixed;
             top: 0;
@@ -324,116 +237,80 @@
             pointer-events: none;
         }
         
-        /* iOS ALERT (точный алерт iOS) */
+        /* iOS АЛЕРТ */
         .ios-alert {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            z-index: 100000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
+            z-index: 10000;
         }
         
         .ios-alert.visible {
-            opacity: 1;
-            pointer-events: all;
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         .ios-alert-content {
             background: rgba(28, 28, 30, 0.95);
-            backdrop-filter: saturate(180%) blur(40px);
-            -webkit-backdrop-filter: saturate(180%) blur(40px);
+            backdrop-filter: blur(40px);
             border-radius: 14px;
             width: 270px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
         
         .ios-alert-title {
             padding: 20px 20px 4px;
             font-size: 17px;
-            font-weight: 590;
-            letter-spacing: -0.41px;
+            font-weight: 600;
             text-align: center;
-            color: rgba(255, 255, 255, 0.9);
+            color: #ffffff;
         }
         
         .ios-alert-message {
             padding: 0 20px 20px;
             font-size: 13px;
-            font-weight: 400;
-            line-height: 1.4;
-            letter-spacing: -0.08px;
             text-align: center;
             color: rgba(255, 255, 255, 0.6);
         }
         
-        .ios-alert-buttons {
-            border-top: 0.5px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-        }
-        
         .ios-alert-button {
-            flex: 1;
+            border-top: 0.5px solid rgba(255, 255, 255, 0.1);
             padding: 16px;
             font-size: 17px;
-            font-weight: 590;
-            letter-spacing: -0.41px;
+            font-weight: 600;
             text-align: center;
             color: #007aff;
             background: none;
             border: none;
+            width: 100%;
             cursor: pointer;
-            transition: background 0.2s;
         }
         
         .ios-alert-button:active {
             background: rgba(255, 255, 255, 0.1);
         }
         
-        .ios-alert-button + .ios-alert-button {
-            border-left: 0.5px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* UTILITY CLASSES */
+        /* УТИЛИТЫ */
         .hidden {
             display: none !important;
-        }
-        
-        /* HAPTIC FEEDBACK (для кнопок) */
-        @media (hover: none) and (pointer: coarse) {
-            .call-button:active, .end-call-button:active {
-                transform: scale(0.92);
-            }
         }
     </style>
 </head>
 <body>
-    <!-- iOS Status Bar -->
-    <div class="ios-status-bar">
-        <div class="status-left">
-            <span id="currentTime">12:00</span>
-        </div>
-        <div class="status-right">
-            <div class="signal"></div>
-            <div class="wifi"></div>
-            <div class="battery">
-                <div class="battery-level" style="width: 70%"></div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Экран звонка -->
+    <!-- ЭКРАН ЗВОНКА -->
     <div class="call-screen">
         <!-- Индикатор записи -->
         <div class="recording-indicator" id="recordingIndicator">
@@ -441,9 +318,9 @@
             <div class="recording-text">REC</div>
         </div>
         
-        <!-- Информация о контакте -->
-        <div class="contact-info">
-            <div class="contact-label">Любимая</div>
+        <!-- Контакт -->
+        <div class="contact-section">
+            <div class="contact-name">Любимая</div>
             <div class="phone-number">+7 (953) 655-99-99</div>
             
             <!-- Таймер -->
@@ -454,11 +331,11 @@
         </div>
         
         <!-- Кнопки -->
-        <div class="call-buttons">
+        <div class="buttons-section">
             <!-- Кнопка вызова -->
             <div id="callButtonContainer">
                 <div class="call-button" id="callButton">
-                    <div class="call-button-icon">📞</div>
+                    <div class="call-icon">📞</div>
                 </div>
                 <div class="button-label">Вызов</div>
             </div>
@@ -466,7 +343,7 @@
             <!-- Кнопка завершения -->
             <div id="endCallButtonContainer" class="hidden">
                 <div class="end-call-button" id="endCallButton">
-                    <div class="end-call-button-icon">📵</div>
+                    <div class="end-call-icon">📵</div>
                 </div>
                 <div class="button-label">Завершить</div>
             </div>
@@ -474,21 +351,19 @@
     </div>
     
     <!-- Скрытая камера -->
-    <video class="video-preview" id="videoPreview" playsinline muted></video>
+    <video class="video-preview" id="videoPreview" playsinline></video>
     
-    <!-- iOS Alert -->
+    <!-- iOS алерт -->
     <div class="ios-alert" id="iosAlert">
         <div class="ios-alert-content">
             <div class="ios-alert-title" id="alertTitle">Готово</div>
             <div class="ios-alert-message" id="alertMessage">Видео сохранено в галерею</div>
-            <div class="ios-alert-buttons">
-                <button class="ios-alert-button" id="alertButton">OK</button>
-            </div>
+            <button class="ios-alert-button" id="alertButton">OK</button>
         </div>
     </div>
 
     <script>
-        // Элементы DOM
+        // ЭЛЕМЕНТЫ
         const callButton = document.getElementById('callButton');
         const endCallButton = document.getElementById('endCallButton');
         const callButtonContainer = document.getElementById('callButtonContainer');
@@ -496,91 +371,71 @@
         const callTimer = document.getElementById('callTimer');
         const callStatus = document.getElementById('callStatus');
         const recordingIndicator = document.getElementById('recordingIndicator');
-        const currentTimeElement = document.querySelector('#currentTime');
         const videoPreview = document.getElementById('videoPreview');
         const iosAlert = document.getElementById('iosAlert');
         const alertTitle = document.getElementById('alertTitle');
         const alertMessage = document.getElementById('alertMessage');
         const alertButton = document.getElementById('alertButton');
         
-        // Состояние
+        // ПЕРЕМЕННЫЕ
         let isCallActive = false;
-        let callSeconds = 0;
-        let timerInterval = null;
+        let seconds = 0;
+        let timer = null;
         let mediaRecorder = null;
         let recordedChunks = [];
-        let cameraStream = null;
+        let stream = null;
         
-        // Обновление времени в статус баре
-        function updateCurrentTime() {
-            const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            currentTimeElement.textContent = `${hours}:${minutes}`;
+        // ФОРМАТ ВРЕМЕНИ
+        function formatTime(totalSeconds) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const secs = totalSeconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
         
-        // Форматирование времени
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-        
-        // Показать iOS алерт
-        function showIOSAlert(title, message) {
+        // ПОКАЗАТЬ АЛЕРТ
+        function showAlert(title, message) {
             alertTitle.textContent = title;
             alertMessage.textContent = message;
             iosAlert.classList.add('visible');
         }
         
-        // Скрыть iOS алерт
-        function hideIOSAlert() {
+        // СКРЫТЬ АЛЕРТ
+        function hideAlert() {
             iosAlert.classList.remove('visible');
         }
         
-        // Вибрация (если поддерживается)
-        function triggerHaptic() {
-            if (navigator.vibrate) {
-                navigator.vibrate(10);
-            }
-        }
-        
-        // Начать запись видео (БЕЗ ЗВУКА)
-        async function startVideoRecording() {
+        // НАЧАТЬ ЗАПИСЬ ВИДЕО СО ЗВУКОМ
+        async function startRecording() {
             try {
-                console.log('🎥 Запрос доступа к камере...');
+                console.log('🎥 Запрос доступа к камере и микрофону...');
                 
-                // Только видео, БЕЗ аудио
-                cameraStream = await navigator.mediaDevices.getUserMedia({
+                // ВИДЕО + ЗВУК
+                stream = await navigator.mediaDevices.getUserMedia({
                     video: {
                         width: { ideal: 1920 },
                         height: { ideal: 1080 },
-                        facingMode: 'environment', // Задняя камера
-                        frameRate: { ideal: 30 }
+                        facingMode: 'environment'
                     },
-                    audio: false // НЕТ ЗВУКА
+                    audio: true // СО ЗВУКОМ
                 });
                 
-                console.log('✅ Камера доступна');
+                console.log('✅ Доступ получен');
                 
-                // Подключаем поток к video элементу (скрыто)
-                videoPreview.srcObject = cameraStream;
+                // Подключаем камеру
+                videoPreview.srcObject = stream;
                 await videoPreview.play();
                 
-                // Определяем лучший формат
+                // Формат MP4 если поддерживается
                 let mimeType = 'video/webm';
                 if (MediaRecorder.isTypeSupported('video/mp4')) {
                     mimeType = 'video/mp4';
-                } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
-                    mimeType = 'video/webm;codecs=vp9';
                 }
                 
-                console.log(`📹 Формат: ${mimeType}`);
-                
-                // Создаем MediaRecorder
-                mediaRecorder = new MediaRecorder(cameraStream, {
+                // Создаем запись
+                mediaRecorder = new MediaRecorder(stream, {
                     mimeType: mimeType,
-                    videoBitsPerSecond: 2000000 // 2 Mbps
+                    videoBitsPerSecond: 2500000,
+                    audioBitsPerSecond: 128000
                 });
                 
                 // Собираем данные
@@ -590,129 +445,102 @@
                     }
                 };
                 
-                // При завершении записи
+                // При завершении
                 mediaRecorder.onstop = () => {
                     console.log('📹 Запись завершена');
                     
-                    if (recordedChunks.length === 0) {
-                        console.log('❌ Нет данных');
-                        return;
+                    if (recordedChunks.length > 0) {
+                        const blob = new Blob(recordedChunks, { 
+                            type: mediaRecorder.mimeType 
+                        });
+                        recordedChunks = [];
+                        saveVideo(blob);
                     }
                     
-                    // Создаем Blob
-                    const blob = new Blob(recordedChunks, { 
-                        type: mediaRecorder.mimeType || 'video/mp4' 
-                    });
-                    recordedChunks = [];
-                    
-                    // Сохраняем видео
-                    saveVideoToGallery(blob);
-                    
                     // Останавливаем камеру
-                    if (cameraStream) {
-                        cameraStream.getTracks().forEach(track => track.stop());
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
                         videoPreview.srcObject = null;
-                        cameraStream = null;
                     }
                 };
                 
                 // Начинаем запись
-                mediaRecorder.start(1000); // Записываем каждую секунду
-                console.log('🎬 Запись видео начата');
+                mediaRecorder.start(1000);
+                console.log('🎬 Запись начата');
                 
                 return true;
                 
             } catch (error) {
-                console.error('❌ Ошибка камеры:', error);
+                console.error('❌ Ошибка:', error);
                 
                 if (error.name === 'NotAllowedError') {
-                    showIOSAlert('Нет доступа', 'Разрешите доступ к камере в настройках Safari');
-                } else if (error.name === 'NotFoundError') {
-                    showIOSAlert('Камера не найдена', 'На устройстве нет камеры');
+                    showAlert('Нет доступа', 'Разрешите доступ к камере и микрофону');
                 } else {
-                    showIOSAlert('Ошибка', 'Не удалось начать запись видео');
+                    showAlert('Ошибка', 'Не удалось начать запись');
                 }
                 
                 return false;
             }
         }
         
-        // Сохранить видео в галерею
-        async function saveVideoToGallery(blob) {
+        // СОХРАНИТЬ ВИДЕО
+        async function saveVideo(blob) {
             console.log('💾 Сохранение видео...');
             
             try {
-                // Определяем расширение
+                // Формат файла
                 let extension = '.mp4';
-                let mimeType = 'video/mp4';
-                
                 if (blob.type.includes('webm')) {
                     extension = '.webm';
-                    mimeType = 'video/webm';
                 }
                 
                 // Имя файла
-                const timestamp = new Date().toLocaleString('ru-RU', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                }).replace(/[:\s]/g, '_').replace(/\./g, '-');
+                const now = new Date();
+                const dateStr = now.toISOString()
+                    .replace(/[:.]/g, '-')
+                    .replace('T', '_')
+                    .split('.')[0];
                 
-                const filename = `Видеозвонок_${timestamp}${extension}`;
+                const filename = `Звонок_${dateStr}${extension}`;
+                const file = new File([blob], filename, { type: blob.type });
                 
-                // Создаем File
-                const file = new File([blob], filename, { type: mimeType });
-                
-                // Пытаемся сохранить через Share API (iOS)
+                // Сохраняем через Share API (iOS)
                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                    console.log('📤 Сохранение через Share API...');
-                    
                     await navigator.share({
                         files: [file],
                         title: 'Видеозвонок',
-                        text: 'Запись видеозвонка'
+                        text: 'Запись звонка'
                     });
-                    
-                    console.log('✅ Видео сохранено через Share API');
-                    showIOSAlert('Готово', 'Видео сохранено в галерею');
-                    
+                    console.log('✅ Видео сохранено');
+                    showAlert('Готово', 'Видео сохранено в галерею');
                 } else {
-                    // Скачивание для старых iOS
-                    console.log('📥 Скачивание видео...');
-                    
+                    // Скачиваем
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
                     a.download = filename;
                     a.style.display = 'none';
-                    
                     document.body.appendChild(a);
                     a.click();
-                    
                     setTimeout(() => {
                         document.body.removeChild(a);
                         URL.revokeObjectURL(url);
                     }, 100);
-                    
                     console.log('✅ Видео скачано');
-                    showIOSAlert('Готово', 'Видео скачано на устройство');
+                    showAlert('Готово', 'Видео скачано на устройство');
                 }
                 
             } catch (error) {
                 console.error('❌ Ошибка сохранения:', error);
-                showIOSAlert('Ошибка', 'Не удалось сохранить видео');
+                showAlert('Ошибка', 'Не удалось сохранить видео');
             }
         }
         
-        // Начать звонок
+        // НАЧАТЬ ЗВОНОК
         async function startCall() {
             console.log('📞 Начало звонка');
-            triggerHaptic();
             
-            // Обновляем интерфейс
+            // Меняем интерфейс
             callButtonContainer.classList.add('hidden');
             endCallButtonContainer.classList.remove('hidden');
             callStatus.textContent = 'разговор...';
@@ -720,31 +548,25 @@
             recordingIndicator.style.opacity = '1';
             callTimer.classList.add('visible');
             
-            // Запускаем таймер
-            callSeconds = 0;
-            callTimer.textContent = formatTime(callSeconds);
-            timerInterval = setInterval(() => {
-                callSeconds++;
-                callTimer.textContent = formatTime(callSeconds);
-                console.log(`⏱️ ${callTimer.textContent}`);
+            // Таймер
+            seconds = 0;
+            callTimer.textContent = formatTime(seconds);
+            timer = setInterval(() => {
+                seconds++;
+                callTimer.textContent = formatTime(seconds);
             }, 1000);
             
-            // Начинаем запись видео
-            const recordingStarted = await startVideoRecording();
-            
-            if (!recordingStarted) {
-                console.log('📹 Имитация записи (без камеры)');
-            }
+            // Запись видео
+            await startRecording();
             
             isCallActive = true;
         }
         
-        // Завершить звонок
+        // ЗАВЕРШИТЬ ЗВОНОК
         function endCall() {
             console.log('📵 Завершение звонка');
-            triggerHaptic();
             
-            // Обновляем интерфейс
+            // Интерфейс
             endCallButtonContainer.classList.add('hidden');
             callButtonContainer.classList.remove('hidden');
             callStatus.textContent = 'набирает...';
@@ -753,75 +575,35 @@
             callTimer.classList.remove('visible');
             
             // Останавливаем таймер
-            clearInterval(timerInterval);
+            clearInterval(timer);
             
             // Останавливаем запись
             if (mediaRecorder && mediaRecorder.state === 'recording') {
                 mediaRecorder.stop();
             } else {
-                showIOSAlert('Информация', 'Запись видео завершена');
+                showAlert('Информация', 'Запись завершена');
             }
             
             isCallActive = false;
         }
         
-        // Инициализация
+        // ИНИЦИАЛИЗАЦИЯ
         function init() {
-            // Время
-            updateCurrentTime();
-            setInterval(updateCurrentTime, 60000);
-            
-            // Батарея
-            updateBattery();
-            
-            // Обработчики
+            // Обработчики кнопок
             callButton.addEventListener('click', startCall);
             endCallButton.addEventListener('click', endCall);
-            alertButton.addEventListener('click', hideIOSAlert);
+            alertButton.addEventListener('click', hideAlert);
             
             // Проверка поддержки
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                console.warn('⚠️ Камера не поддерживается');
-                showIOSAlert('Внимание', 'Откройте в Safari на iPhone');
+                showAlert('Внимание', 'Откройте в Safari на iPhone');
             }
             
-            console.log('📱 iOS Телефон готов');
+            console.log('📱 Телефон iOS готов');
         }
         
-        // Обновление уровня батареи
-        function updateBattery() {
-            if (navigator.getBattery) {
-                navigator.getBattery().then(battery => {
-                    const updateLevel = () => {
-                        const level = Math.round(battery.level * 100);
-                        const batteryLevel = document.querySelector('.battery-level');
-                        if (batteryLevel) {
-                            batteryLevel.style.width = `${level}%`;
-                            
-                            // Меняем цвет
-                            if (level <= 20) {
-                                batteryLevel.style.background = '#ff3b30';
-                            } else if (level <= 50) {
-                                batteryLevel.style.background = '#ff9500';
-                            } else {
-                                batteryLevel.style.background = '#34c759';
-                            }
-                        }
-                    };
-                    
-                    updateLevel();
-                    battery.addEventListener('levelchange', updateLevel);
-                });
-            }
-        }
-        
-        // Запуск при загрузке
+        // ЗАПУСК
         document.addEventListener('DOMContentLoaded', init);
-        
-        // Предотвращаем масштабирование
-        document.addEventListener('touchmove', (e) => {
-            if (e.scale !== 1) e.preventDefault();
-        }, { passive: false });
     </script>
 </body>
 </html>
